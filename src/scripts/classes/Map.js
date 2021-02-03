@@ -18,6 +18,8 @@ export default class Map {
     create() {
         this.createLayers();
         this.createCollision();
+        this.createCheckpoints();
+        this.createOils();
     }
     createLayers() {
         this.tilemap.createStaticLayer('grass', this.tileset);
@@ -28,8 +30,23 @@ export default class Map {
     createCollision() {
         this.tilemap.findObject('collisions', collision => {
             const sprite = this.scene.matter.add.sprite(collision.x + collision.width / 2, collision.y - collision.height / 2, 'objects', collision.name);
-            // sprite.setOrigin(0, 1);
             sprite.setStatic(true);
+        });
+    }
+    createOils() {
+        this.tilemap.findObject('oils', oil => {
+            const sprite = this.scene.matter.add.sprite(oil.x + oil.width / 2, oil.y - oil.height / 2, 'objects', 'oil');
+            sprite.setStatic(true);
+            sprite.setSensor(true);
+        });
+    }
+    createCheckpoints() {
+        this.checkpoints = [];
+
+        this.tilemap.findObject('checkpoints', checkpoint => {
+            let rectangle = new Phaser.Geom.Rectangle(checkpoint.x, checkpoint.y, checkpoint.width, checkpoint.height);
+            rectangle.index = checkpoint.properties.find(property => property.name === 'value').value;
+            this.checkpoints.push(rectangle);
         });
     }
     getPlayerPosition() {
@@ -47,5 +64,9 @@ export default class Map {
         }
 
         return GRASS_FRICTION;
+    }
+    getCheckpoint(car) {
+        const checkpoint = this.checkpoints.find(checkpoint => checkpoint.contains(car.x, car.y));
+        return checkpoint ? parseInt(checkpoint.index) : false;
     }
 }
