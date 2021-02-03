@@ -1,3 +1,5 @@
+import Client from "../classes/Client";
+
 export default class StartScene extends Phaser.Scene {
     constructor() {
         super("Start");
@@ -39,9 +41,10 @@ export default class StartScene extends Phaser.Scene {
 
     requestGame() {
         // инициализировать клиент
+        this.client = new Client();
         // отправить запрос игры на сервер
-        // по факту получения противника
-        // начать игру
-        this.startGame();
+        this.client.init();
+        // по факту получения противника начать игру
+        this.client.on('game', this.startGame, this);
     }
 }
