@@ -8,7 +8,7 @@ export default class StatsPopup {
         const style = {font: '30px Arial', fill: '#FFFFFF'};
         const popupWidth = 800;
         const popupHeight = 600;
-        
+
         this.popup = this.scene.add.graphics()
             .setScrollFactor(0)
             .fillStyle(0x000000, 0.5)

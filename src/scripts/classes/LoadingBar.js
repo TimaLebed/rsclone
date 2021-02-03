@@ -11,7 +11,7 @@ export default class LoadingBar {
         };
 
         this.progressBox = this.scene.add.graphics();
-        this.progressBar = this.scene.add.graphics(); 
+        this.progressBar = this.scene.add.graphics();
 
         this.showProgressBox();
         this.setEvents();

@@ -31,11 +31,9 @@ export default class GameScene extends Phaser.Scene {
         this.add.sprite(0, 0, 'bg').setOrigin(0);
     }
     getCarsConfig() {
-        // кофниг первого игрока
         let config = {player: CARS.BLUE, enemy: CARS.RED};
 
         if (this.client && !this.client.master) {
-            // конфиг второго игрока
             config = {player: CARS.RED, enemy: CARS.BLUE};
         }
         return config;
