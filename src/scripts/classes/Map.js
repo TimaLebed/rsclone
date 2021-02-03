@@ -1,3 +1,10 @@
+const GRASS_FRICTION = 0.3;
+const ROADS_FRICTION = {
+    road: 1,
+    ground: 0.5,
+    sand: 0.4
+};
+
 export default class Map {
     constructor(scene) {
         this.scene = scene;
@@ -20,8 +27,8 @@ export default class Map {
     }
     createCollision() {
         this.tilemap.findObject('collisions', collision => {
-            const sprite = this.scene.matter.add.sprite(collision.x, collision.y, 'objects', collision.name);
-            sprite.setOrigin(0, 1);
+            const sprite = this.scene.matter.add.sprite(collision.x + collision.width / 2, collision.y - collision.height / 2, 'objects', collision.name);
+            // sprite.setOrigin(0, 1);
             sprite.setStatic(true);
         });
     }
@@ -29,5 +36,16 @@ export default class Map {
         return this.tilemap.findObject('player', position => {
             return position.name === 'player';
         });
+    }
+
+    getTileFriction(car) {
+        for (let road in ROADS_FRICTION) {
+            let tile = this.tilemap.getTileAtWorldXY(car.x, car.y, false, this.scene.cameras.main, road);
+            if (tile) {
+                return ROADS_FRICTION[road];
+            }
+        }
+
+        return GRASS_FRICTION;
     }
 }
