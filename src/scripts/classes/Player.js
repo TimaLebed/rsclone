@@ -5,18 +5,14 @@ const ACCELERATION = 0.5;
 const SLIDE_ANGLE = 5;
 
 export default class Player {
-    constructor(scene, map) {
+    constructor(scene, map, config) {
         this.scene = scene;
         this.map = map;
-        const position = this.map.getPlayerPosition();
-        this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', 'car_blue_1');
+        const position = this.map.getPlayerPosition(config.position);
+        this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', config.sprite);
         this.car.setFixedRotation(true);
         this._velocity = 0;
         this.checkpoint = 0;
-        this.laps = 0;
-    }
-    get lap() {
-        return this.laps + 1;
     }
     get direction() {
         let direction = DIRECTIONS.NONE;
@@ -81,8 +77,7 @@ export default class Player {
     onCheckpoint(checkpoint) {
         if (checkpoint === 1 && this.checkpoint === this.map.checkpoints.length) {
             this.checkpoint = 1;
-            ++this.laps;
-            this.car.emit('lap', this.lap);
+            this.car.emit('lap');
         } else if (checkpoint === this.checkpoint + 1) {
             ++this.checkpoint;
         }
