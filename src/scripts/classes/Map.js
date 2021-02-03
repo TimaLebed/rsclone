@@ -49,12 +49,11 @@ export default class Map {
             this.checkpoints.push(rectangle);
         });
     }
-    getPlayerPosition() {
-        return this.tilemap.findObject('player', position => {
-            return position.name === 'player';
+    getPlayerPosition(positionName) {
+        return this.tilemap.findObject(positionName, position => {
+            return position.name === positionName;
         });
     }
-
     getTileFriction(car) {
         for (let road in ROADS_FRICTION) {
             let tile = this.tilemap.getTileAtWorldXY(car.x, car.y, false, this.scene.cameras.main, road);
